@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 from fastapi import Request
@@ -35,4 +36,18 @@ async def validation_exception_handler(
         message="Request validation failed",
         details={"path": str(request.url.path), "errors": exc.errors()},
         status_code=422,
+    )
+
+
+logger = logging.getLogger(__name__)
+
+
+async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    # Log full exception server-side (stack trace), return safe message to client
+    logger.exception("Unhandled exception", extra={"path": str(request.url.path)})
+    return error_response(
+        code="INTERNAL_ERROR",
+        message="Internal server error",
+        details={"path": str(request.url.path)},
+        status_code=500,
     )

@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     version: str = "0.1.0"
     commit: str | None = None
 
+    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/jmip"
+
     model_config = SettingsConfigDict(
         env_prefix="JMIP_",
         case_sensitive=False,
