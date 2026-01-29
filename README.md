@@ -16,3 +16,38 @@ The system is designed with production-style concerns in mind: idempotent ingest
 - `apps/worker`: async worker service (pipelines, scheduled runs)
 - `apps/web`: Next.js web UI
 - `packages/jmip`: shared Python package (domain, pipelines, db)
+
+## Current Status
+
+Phase 1 (Foundation) is complete.
+
+The project currently includes:
+- Async FastAPI backend
+- PostgreSQL persistence with SQLAlchemy
+- Alembic migrations
+- Core data model (jobs, snapshots, skills)
+- Health checks and tests
+
+Next phase will focus on job ingestion and normalization.
+
+## Local Development (Backend)
+
+Requirements:
+- Python 3.11+
+- Docker
+
+Start Postgres:
+```bash
+cd apps/api
+docker compose up -d
+```
+
+Run migrations:
+```bash
+alembic upgrade head
+```
+
+Run API:
+```bash
+PYTHONPATH=apps/api uvicorn jmip_api.main:app --reload
+```

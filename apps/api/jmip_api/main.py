@@ -5,8 +5,13 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from jmip_api.core.config import settings
-from jmip_api.core.errors import http_exception_handler, validation_exception_handler
+from jmip_api.core.errors import (
+    http_exception_handler,
+    unhandled_exception_handler,
+    validation_exception_handler,
+)
 from jmip_api.routers.health import router as health_router
+from jmip_api.routers.health_db import router as health_db_router
 from jmip_api.routers.version import router as version_router
 
 
@@ -33,9 +38,11 @@ def create_app() -> FastAPI:
 
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(Exception, unhandled_exception_handler)
 
     app.include_router(health_router)
     app.include_router(version_router)
+    app.include_router(health_db_router)
 
     return app
 

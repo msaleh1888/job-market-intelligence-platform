@@ -17,3 +17,6 @@ ignore = ["E203"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = [
+  "integration: tests that require external services like Postgres",
+]
